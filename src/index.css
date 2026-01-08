@@ -24,6 +24,14 @@
 
   /* Typography */
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+
+  /* Responsive breakpoints (for reference) */
+  /* Mobile: < 640px */
+  /* Tablet: 640px - 1024px */
+  /* Desktop: > 1024px */
+
+  /* Bottom nav height for mobile */
+  --bottom-nav-height: 4.5rem;
 }
 
 body {
@@ -32,6 +40,7 @@ body {
   background-color: var(--color-background);
   color: var(--color-text);
   -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
 }
 
 * {
@@ -52,14 +61,44 @@ button {
   padding: var(--spacing-md);
 }
 
+/* Responsive Grid - Mobile first approach */
 .grid-2 {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--spacing-md);
+  gap: var(--spacing-sm);
 }
 
 .grid-4 {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--spacing-md);
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-sm);
+}
+
+/* Tablet */
+@media (min-width: 640px) {
+  .grid-2 {
+    gap: var(--spacing-md);
+  }
+
+  .grid-4 {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-md);
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Hide scrollbar for mobile but keep functionality */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
 }

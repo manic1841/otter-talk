@@ -1,21 +1,33 @@
+/* ===================================
+   Layout - Responsive Design
+   Mobile: < 640px (bottom nav)
+   Tablet: 640px - 1024px (collapsed sidebar)
+   Desktop: > 1024px (full sidebar)
+=================================== */
+
 .layout-root {
   display: flex;
+  flex-direction: column;
   height: 100vh;
+  height: 100dvh; /* Dynamic viewport height for mobile browsers */
   overflow: hidden;
   background-color: var(--color-background);
 }
 
+/* ===================================
+   Desktop Sidebar (hidden on mobile)
+=================================== */
 .layout-sidebar {
-  width: 16rem; /* w-64 */
+  display: none;
+  width: 16rem;
   flex-shrink: 0;
   background-color: var(--color-surface);
   border-right: 1px solid var(--color-border);
-  display: flex;
   flex-direction: column;
 }
 
 .sidebar-header {
-  padding: 1.5rem; /* p-6 */
+  padding: 1.5rem;
   border-bottom: 1px solid var(--color-border);
 }
 
@@ -23,7 +35,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 1.5rem; /* text-2xl */
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--color-primary);
   text-decoration: none;
@@ -37,18 +49,18 @@
 .sidebar-nav {
   flex: 1;
   overflow-y: auto;
-  padding: 1rem; /* p-4 */
+  padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem; /* space-y-1 */
+  gap: 0.25rem;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 0.75rem; /* gap-3 */
-  padding: 0.75rem 1rem; /* px-4 py-3 */
-  border-radius: 0.5rem; /* rounded-lg */
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
   transition: background-color 0.2s, color 0.2s;
   text-decoration: none;
   color: var(--color-text-muted);
@@ -59,7 +71,7 @@
 }
 
 .nav-item.active {
-  background-color: #e0e7ff; /* Better match for indigo-50 */
+  background-color: #e0e7ff;
   color: var(--color-primary);
   font-weight: 500;
 }
@@ -68,10 +80,9 @@
   font-weight: 700;
 }
 
-/* Specific overrides for active text styles */
 .nav-item.active.favorite-item {
-  background-color: #fef2f2; /* bg-red-50 */
-  color: #ef4444; /* text-red-500 */
+  background-color: #fef2f2;
+  color: #ef4444;
 }
 
 .category-header {
@@ -82,9 +93,9 @@
 }
 
 .category-title {
-  font-size: 0.75rem; /* text-xs */
+  font-size: 0.75rem;
   font-weight: 600;
-  color: #9ca3af; /* text-gray-400 */
+  color: #9ca3af;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -96,37 +107,45 @@
   flex-shrink: 0;
 }
 
-/* Inherits color from nav-item */
 .category-link-text {
   font-weight: inherit;
 }
 
 .nav-item.active .category-link-text {
-  color: var(--color-text); /* text-gray-900 */
+  color: var(--color-text);
   font-weight: 700;
 }
 
-/* Main Content Area */
+/* ===================================
+   Main Content Area
+=================================== */
 .layout-content {
   flex: 1;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  padding-bottom: var(--bottom-nav-height); /* Space for bottom nav on mobile */
 }
 
+/* ===================================
+   Header - Mobile First
+=================================== */
 .content-header {
   background-color: var(--color-surface);
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  padding: 1rem 2rem; /* px-8 py-4 */
+  padding: 0.75rem 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.5rem;
+  flex-shrink: 0;
 }
 
 .page-title {
-  font-size: 1.5rem; /* text-2xl */
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--color-text);
+  white-space: nowrap;
 }
 
 .header-action-btn {
@@ -144,20 +163,33 @@
   color: var(--color-text);
 }
 
-/* Quick Action Buttons in Header */
+/* ===================================
+   Quick Action Buttons
+=================================== */
 .header-quick-actions {
   display: flex;
-  gap: 0.75rem;
+  gap: 0.5rem;
   align-items: center;
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  flex: 1;
+  justify-content: center;
+}
+
+.header-quick-actions::-webkit-scrollbar {
+  display: none;
 }
 
 .quick-action-btn {
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.75rem;
-  font-size: 1.25rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
   font-weight: 700;
   transition: transform 0.1s, box-shadow 0.2s;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .quick-action-btn:hover {
@@ -170,39 +202,294 @@
 }
 
 .quick-action-yes {
-  background-color: #86efac; /* green */
+  background-color: #86efac;
   color: #166534;
 }
 
 .quick-action-no {
-  background-color: #fca5a5; /* red */
+  background-color: #fca5a5;
   color: #991b1b;
 }
 
 .quick-action-other {
-  background-color: #93c5fd; /* blue */
+  background-color: #93c5fd;
   color: #1e40af;
 }
 
 .quick-action-name {
-  background-color: #d8b4fe; /* purple */
+  background-color: #d8b4fe;
   color: #6b21a8;
 }
 
+/* ===================================
+   Scrollable Content
+=================================== */
 .content-scrollable {
   flex: 1;
   overflow-y: auto;
-  padding: 1rem; /* p-4 */
-}
-
-@media (min-width: 768px) {
-  .content-scrollable {
-    padding: 2rem; /* md:p-8 */
-  }
+  padding: 0.5rem;
+  -webkit-overflow-scrolling: touch;
 }
 
 .content-container {
-  max-width: 80rem; /* max-w-7xl */
+  max-width: 80rem;
   margin: 0 auto;
   height: 100%;
+}
+
+/* ===================================
+   Bottom Navigation (Mobile)
+=================================== */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--bottom-nav-height);
+  background-color: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  align-items: stretch;
+  justify-content: space-around;
+  z-index: 100;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.bottom-nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  text-decoration: none;
+  color: var(--color-text-muted);
+  transition: color 0.2s;
+  font-size: 0.625rem;
+  font-weight: 500;
+}
+
+.bottom-nav-item.active {
+  color: var(--color-primary);
+}
+
+.bottom-nav-item.active.favorite-item {
+  color: #ef4444;
+}
+
+.bottom-nav-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.bottom-nav-label {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Category Menu Button */
+.bottom-nav-menu-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  color: var(--color-text-muted);
+  transition: color 0.2s;
+  font-size: 0.625rem;
+  font-weight: 500;
+}
+
+.bottom-nav-menu-btn.active {
+  color: var(--color-primary);
+}
+
+/* ===================================
+   Category Drawer (Mobile)
+=================================== */
+.category-drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 200;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.category-drawer-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.category-drawer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--color-surface);
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  z-index: 201;
+  transform: translateY(100%);
+  transition: transform 0.3s ease-out;
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.category-drawer.open {
+  transform: translateY(0);
+}
+
+.drawer-handle {
+  width: 2rem;
+  height: 0.25rem;
+  background-color: var(--color-border);
+  border-radius: 9999px;
+  margin: 0.75rem auto;
+  flex-shrink: 0;
+}
+
+.drawer-title {
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0 1rem 0.75rem;
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+  text-align: center;
+}
+
+.drawer-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.drawer-category-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background-color: var(--color-background);
+  text-decoration: none;
+  color: var(--color-text);
+  font-weight: 500;
+  transition: transform 0.1s, box-shadow 0.2s;
+}
+
+.drawer-category-btn:active {
+  transform: scale(0.98);
+}
+
+.drawer-category-btn.active {
+  background-color: #e0e7ff;
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.drawer-category-dot {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 9999px;
+  flex-shrink: 0;
+}
+
+/* ===================================
+   Tablet Styles (640px - 1024px)
+=================================== */
+@media (min-width: 640px) {
+  .content-header {
+    padding: 1rem 1.5rem;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .quick-action-btn {
+    padding: 0.625rem 1rem;
+    font-size: 1rem;
+    border-radius: 0.625rem;
+  }
+
+  .content-scrollable {
+    padding: 1rem;
+  }
+
+  .bottom-nav-item,
+  .bottom-nav-menu-btn {
+    font-size: 0.75rem;
+  }
+
+  .bottom-nav-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .drawer-content {
+    grid-template-columns: repeat(3, 1fr);
+    padding: 1rem;
+    gap: 0.75rem;
+  }
+
+  .drawer-category-btn {
+    padding: 1.25rem;
+    font-size: 1.125rem;
+  }
+}
+
+/* ===================================
+   Desktop Styles (> 1024px)
+=================================== */
+@media (min-width: 1024px) {
+  .layout-root {
+    flex-direction: row;
+  }
+
+  .layout-sidebar {
+    display: flex;
+  }
+
+  .layout-content {
+    padding-bottom: 0; /* Remove bottom nav space */
+  }
+
+  .bottom-nav {
+    display: none;
+  }
+
+  .category-drawer-overlay,
+  .category-drawer {
+    display: none;
+  }
+
+  .content-header {
+    padding: 1rem 2rem;
+  }
+
+  .header-quick-actions {
+    justify-content: flex-start;
+    gap: 0.75rem;
+  }
+
+  .quick-action-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.75rem;
+    font-size: 1.25rem;
+  }
+
+  .content-scrollable {
+    padding: 2rem;
+  }
 }

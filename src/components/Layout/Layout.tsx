@@ -1,11 +1,11 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useState, useCallback } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Category,
   CategoryLabels,
   CategoryColors,
 } from "../../domains/category/types/Category";
-import { Grid2X2, Grid3X3, Heart, Home, LayoutGrid } from "lucide-react";
+import { Grid2X2, Grid3X3, Heart, Home, LayoutGrid, Menu } from "lucide-react";
 import { TTSService } from "../../services/TTSService";
 import "./Layout.css";
 
@@ -20,7 +20,7 @@ interface NavItemProps {
   icon: React.ReactNode;
   label: string;
   isActive: boolean;
-  className?: string; // Kept for additional custom classes if needed
+  className?: string;
 }
 
 const NavItem: React.FC<NavItemProps> = ({
@@ -36,12 +36,42 @@ const NavItem: React.FC<NavItemProps> = ({
   </Link>
 );
 
+// Bottom Navigation Item for Mobile
+interface BottomNavItemProps {
+  to: string;
+  icon: React.ReactNode;
+  label: string;
+  isActive: boolean;
+  className?: string;
+}
+
+const BottomNavItem: React.FC<BottomNavItemProps> = ({
+  to,
+  icon,
+  label,
+  isActive,
+  className = "",
+}) => (
+  <Link
+    to={to}
+    className={`bottom-nav-item ${isActive ? "active" : ""} ${className}`}
+  >
+    <span className="bottom-nav-icon">{icon}</span>
+    <span className="bottom-nav-label">{label}</span>
+  </Link>
+);
+
 export const Layout: React.FC<LayoutProps> = ({
   children,
   gridColumns,
   onToggleGrid,
 }) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  // Check if current path is a category page
+  const isCategoryPage = location.pathname.startsWith("/category/");
 
   const getPageTitle = () => {
     if (location.pathname === "/" || location.pathname === "") return "全部";
@@ -57,9 +87,21 @@ export const Layout: React.FC<LayoutProps> = ({
     return "Otter Talk";
   };
 
+  const handleCloseDrawer = useCallback(() => {
+    setIsDrawerOpen(false);
+  }, []);
+
+  const handleCategorySelect = useCallback(
+    (category: Category) => {
+      navigate(`/category/${category}`);
+      setIsDrawerOpen(false);
+    },
+    [navigate]
+  );
+
   return (
     <div className="layout-root">
-      {/* Sidebar */}
+      {/* Desktop Sidebar */}
       <aside className="layout-sidebar">
         <div className="sidebar-header">
           <Link to="/" className="logo-link">
@@ -111,6 +153,8 @@ export const Layout: React.FC<LayoutProps> = ({
           ))}
         </nav>
       </aside>
+
+      {/* Main Content */}
       <div className="layout-content">
         {/* Header */}
         <header className="content-header">
@@ -163,6 +207,66 @@ export const Layout: React.FC<LayoutProps> = ({
         <main className="content-scrollable">
           <div className="content-container">{children}</div>
         </main>
+      </div>
+
+      {/* Mobile Bottom Navigation */}
+      <nav className="bottom-nav">
+        <BottomNavItem
+          to="/"
+          icon={<LayoutGrid size={24} />}
+          label="全部"
+          isActive={location.pathname === "/"}
+        />
+        <BottomNavItem
+          to="/favorites"
+          icon={
+            <Heart
+              size={24}
+              fill={
+                location.pathname === "/favorites" ? "currentColor" : "none"
+              }
+            />
+          }
+          label="我的最愛"
+          isActive={location.pathname === "/favorites"}
+          className="favorite-item"
+        />
+        <button
+          className={`bottom-nav-menu-btn ${isCategoryPage ? "active" : ""}`}
+          onClick={() => setIsDrawerOpen(true)}
+        >
+          <span className="bottom-nav-icon">
+            <Menu size={24} />
+          </span>
+          <span className="bottom-nav-label">分類</span>
+        </button>
+      </nav>
+
+      {/* Category Drawer for Mobile */}
+      <div
+        className={`category-drawer-overlay ${isDrawerOpen ? "open" : ""}`}
+        onClick={handleCloseDrawer}
+      />
+      <div className={`category-drawer ${isDrawerOpen ? "open" : ""}`}>
+        <div className="drawer-handle" />
+        <h2 className="drawer-title">選擇分類</h2>
+        <div className="drawer-content">
+          {Object.values(Category).map((cat) => (
+            <button
+              key={cat}
+              className={`drawer-category-btn ${
+                location.pathname.includes(cat) ? "active" : ""
+              }`}
+              onClick={() => handleCategorySelect(cat)}
+            >
+              <span
+                className="drawer-category-dot"
+                style={{ backgroundColor: CategoryColors[cat] }}
+              />
+              <span>{CategoryLabels[cat]}</span>
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
