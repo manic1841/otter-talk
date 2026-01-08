@@ -1,0 +1,17 @@
+.favorites-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.favorites-empty-text {
+  font-size: 1.25rem; /* text-xl */
+}
+
+.favorites-empty-subtext {
+  margin-top: 0.5rem; /* mt-2 */
+}
