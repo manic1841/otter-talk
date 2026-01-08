@@ -12,7 +12,7 @@ function App() {
   };
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Layout gridColumns={gridColumns} onToggleGrid={toggleGrid}>
         <Routes>
           <Route path="/" element={<HomePage gridColumns={gridColumns} />} />
